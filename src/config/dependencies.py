@@ -4,10 +4,12 @@ from typing import AsyncGenerator
 from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from config.settings import TestingSettings, Settings, BaseAppSettings
-from security.interfaces import JWTAuthManagerInterface
-from security.token_manager import JWTAuthManager
-from database.session_sqlite import get_sqlite_db
+from src.config.settings import TestingSettings, Settings, BaseAppSettings
+from src.security.interfaces import JWTAuthManagerInterface
+from src.security.token_manager import JWTAuthManager
+
+from src.database.session_sqlite import get_sqlite_db
+from src.database.session_postgresql import get_postgresql_db
 
 
 def get_settings() -> BaseAppSettings:
@@ -21,14 +23,20 @@ def get_settings() -> BaseAppSettings:
     return Settings()
 
 
-async def get_db() -> AsyncGenerator[AsyncSession, None]:
+async def get_db(
+    settings: BaseAppSettings = Depends(get_settings)
+) -> AsyncGenerator[AsyncSession, None]:
     """
     Provide an asynchronous database session for FastAPI dependencies.
-    Delegates to the configured database session function (SQLite for local/testing).
+    Delegates to the configured database session function (PostgreSQL for development, SQLite for testing).
     """
-    async for session in get_sqlite_db():
+    if isinstance(settings, TestingSettings):
+        session_generator = get_sqlite_db
+    else:
+        session_generator = get_postgresql_db
+
+    async for session in session_generator():
         yield session
-# ---------------------------------------------
 
 
 def get_jwt_auth_manager(settings: BaseAppSettings = Depends(get_settings)) -> JWTAuthManagerInterface:
