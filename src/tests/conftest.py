@@ -8,12 +8,16 @@ from database import (
     reset_database,
     get_db_contextmanager,
     UserGroupEnum,
-    UserGroupModel
+    UserGroupModel,
+    initialize_sqlite,
 )
 from database.populate import CSVDatabaseSeeder
 from main import app
 from security.interfaces import JWTAuthManagerInterface
 from security.token_manager import JWTAuthManager
+
+
+initialize_sqlite()
 
 
 @pytest_asyncio.fixture(scope="function", autouse=True)

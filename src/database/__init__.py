@@ -19,8 +19,14 @@ from database.models.movies import (
     ActorsMoviesModel,
     MoviesLanguagesModel
 )
-from database.session_sqlite import reset_sqlite_database as reset_database
+
+from database.session_sqlite import (
+    reset_sqlite_database as reset_database,
+    initialize_sqlite,
+)
 from database.validators import accounts as accounts_validators
+
+from database.session_postgresql import initialize_postgresql
 
 environment = os.getenv("ENVIRONMENT", "developing")
 
@@ -30,6 +36,8 @@ if environment == "testing":
         get_sqlite_db as get_db
     )
 else:
+    initialize_postgresql()
+
     from database.session_postgresql import (
         get_postgresql_db_contextmanager as get_db_contextmanager,
         get_postgresql_db as get_db
