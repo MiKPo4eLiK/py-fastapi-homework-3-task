@@ -1,9 +1,20 @@
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator, Optional, Callable
-
-from sqlalchemy import create_engine, Engine
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncEngine
+from typing import (
+    AsyncGenerator,
+    Optional,
+    Callable,
+)
+from sqlalchemy import (
+    create_engine,
+    Engine,
+)
+from sqlalchemy.ext.asyncio import (
+    create_async_engine,
+    AsyncSession,
+    AsyncEngine,
+)
 from sqlalchemy.orm import sessionmaker
+
 
 postgresql_engine: Optional[AsyncEngine] = None
 sync_postgresql_engine: Optional[Engine] = None

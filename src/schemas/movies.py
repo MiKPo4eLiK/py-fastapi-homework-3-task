@@ -1,10 +1,18 @@
-from datetime import date, datetime
-from typing import Optional, List
-
-from pydantic import BaseModel, Field, field_validator
-
-from database.models.movies import MovieStatusEnum
-from schemas.examples.movies import (
+from datetime import (
+    date,
+    datetime,
+)
+from typing import (
+    Optional,
+    List,
+)
+from pydantic import (
+    BaseModel,
+    Field,
+    field_validator,
+)
+from src.database.models.movies import MovieStatusEnum
+from src.schemas.examples.movies import (
     country_schema_example,
     language_schema_example,
     genre_schema_example,
@@ -89,7 +97,7 @@ class MovieBaseSchema(BaseModel):
 
     @field_validator("date")
     @classmethod
-    def validate_date(cls, value):
+    def validate_date(cls, value) -> date:
         current_year = datetime.now().year
         if value.year > current_year + 1:
             raise ValueError(f"The year in 'date' cannot be greater than {current_year + 1}.")

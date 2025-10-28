@@ -1,11 +1,12 @@
 import random
-
 import pytest
-from sqlalchemy import select, func
+from sqlalchemy import (
+    select,
+    func,
+)
 from sqlalchemy.orm import joinedload
-
-from database import MovieModel
-from database import (
+from src.database.models import MovieModel
+from src.database.models import (
     GenreModel,
     ActorModel,
     LanguageModel,
@@ -14,7 +15,7 @@ from database import (
 
 
 @pytest.mark.asyncio
-async def test_get_movies_empty_database(client):
+async def test_get_movies_empty_database(client) -> None:
     """
     Test that the `/movies/` endpoint returns a 404 error when the database is empty.
     """
@@ -26,7 +27,7 @@ async def test_get_movies_empty_database(client):
 
 
 @pytest.mark.asyncio
-async def test_get_movies_default_parameters(client, seed_database):
+async def test_get_movies_default_parameters(client, seed_database) -> None:
     """
     Test the `/movies/` endpoint with default pagination parameters.
     """
@@ -49,7 +50,7 @@ async def test_get_movies_default_parameters(client, seed_database):
 
 
 @pytest.mark.asyncio
-async def test_get_movies_with_custom_parameters(client, seed_database):
+async def test_get_movies_with_custom_parameters(client, seed_database) -> None:
     """
     Test the `/movies/` endpoint with custom pagination parameters.
     """
@@ -90,7 +91,7 @@ async def test_get_movies_with_custom_parameters(client, seed_database):
     (1, 0, "Input should be greater than or equal to 1"),
     (0, 0, "Input should be greater than or equal to 1"),
 ])
-async def test_invalid_page_and_per_page(client, page, per_page, expected_detail):
+async def test_invalid_page_and_per_page(client, page, per_page, expected_detail) -> None:
     """
     Test the `/movies/` endpoint with invalid `page` and `per_page` parameters.
     """
@@ -110,7 +111,7 @@ async def test_invalid_page_and_per_page(client, page, per_page, expected_detail
 
 
 @pytest.mark.asyncio
-async def test_per_page_maximum_allowed_value(client, seed_database):
+async def test_per_page_maximum_allowed_value(client, seed_database) -> None:
     """
     Test the `/movies/` endpoint with the maximum allowed `per_page` value.
     """
@@ -127,7 +128,7 @@ async def test_per_page_maximum_allowed_value(client, seed_database):
 
 
 @pytest.mark.asyncio
-async def test_page_exceeds_maximum(client, db_session, seed_database):
+async def test_page_exceeds_maximum(client, db_session, seed_database) -> None:
     """
     Test the `/movies/` endpoint with a page number that exceeds the maximum.
     """
@@ -148,7 +149,7 @@ async def test_page_exceeds_maximum(client, db_session, seed_database):
 
 
 @pytest.mark.asyncio
-async def test_movies_sorted_by_id_desc(client, db_session, seed_database):
+async def test_movies_sorted_by_id_desc(client, db_session, seed_database) -> None:
     """
     Test that movies are returned sorted by `id` in descending order
     and match the expected data from the database.
@@ -173,7 +174,7 @@ async def test_movies_sorted_by_id_desc(client, db_session, seed_database):
 
 
 @pytest.mark.asyncio
-async def test_movie_list_with_pagination(client, db_session, seed_database):
+async def test_movie_list_with_pagination(client, db_session, seed_database) -> None:
     """
     Test the `/movies/` endpoint with pagination parameters.
 
@@ -223,7 +224,7 @@ async def test_movie_list_with_pagination(client, db_session, seed_database):
 
 
 @pytest.mark.asyncio
-async def test_movies_fields_match_schema(client, db_session, seed_database):
+async def test_movies_fields_match_schema(client, db_session, seed_database) -> None:
     """
     Test that each movie in the response matches the fields defined in `MovieListItemSchema`.
     """
@@ -245,7 +246,7 @@ async def test_movies_fields_match_schema(client, db_session, seed_database):
 
 
 @pytest.mark.asyncio
-async def test_get_movie_by_id_not_found(client):
+async def test_get_movie_by_id_not_found(client) -> None:
     """
     Test that the `/movies/{movie_id}` endpoint returns a 404 error
     when a movie with the given ID does not exist.
@@ -262,7 +263,7 @@ async def test_get_movie_by_id_not_found(client):
 
 
 @pytest.mark.asyncio
-async def test_get_movie_by_id_valid(client, db_session, seed_database):
+async def test_get_movie_by_id_valid(client, db_session, seed_database) -> None:
     """
     Test that the `/movies/{movie_id}` endpoint returns the correct movie details
     when a valid movie ID is provided.
@@ -297,7 +298,7 @@ async def test_get_movie_by_id_valid(client, db_session, seed_database):
 
 
 @pytest.mark.asyncio
-async def test_get_movie_by_id_fields_match_database(client, db_session, seed_database):
+async def test_get_movie_by_id_fields_match_database(client, db_session, seed_database) -> None:
     """
     Test that the `/movies/{movie_id}` endpoint returns all fields matching the database data.
     """
@@ -356,7 +357,7 @@ async def test_get_movie_by_id_fields_match_database(client, db_session, seed_da
 
 
 @pytest.mark.asyncio
-async def test_create_movie_and_related_models(client, db_session):
+async def test_create_movie_and_related_models(client, db_session) -> None:
     """
     Test that a new movie is created successfully and related models
     (genres, actors, languages) are created if they do not exist.
@@ -409,7 +410,7 @@ async def test_create_movie_and_related_models(client, db_session):
 
 
 @pytest.mark.asyncio
-async def test_create_movie_duplicate_error(client, db_session, seed_database):
+async def test_create_movie_duplicate_error(client, db_session, seed_database) -> None:
     """
     Test that trying to create a movie with the same name and date as an existing movie
     results in a 409 conflict error.
@@ -446,7 +447,7 @@ async def test_create_movie_duplicate_error(client, db_session, seed_database):
 
 
 @pytest.mark.asyncio
-async def test_delete_movie_success(client, db_session, seed_database):
+async def test_delete_movie_success(client, db_session, seed_database) -> None:
     """
     Test the `/movies/{movie_id}/` endpoint for successful movie deletion.
     """
@@ -467,7 +468,7 @@ async def test_delete_movie_success(client, db_session, seed_database):
 
 
 @pytest.mark.asyncio
-async def test_delete_movie_not_found(client):
+async def test_delete_movie_not_found(client) -> None:
     """
     Test the `/movies/{movie_id}/` endpoint with a non-existent movie ID.
     """
@@ -484,7 +485,7 @@ async def test_delete_movie_not_found(client):
 
 
 @pytest.mark.asyncio
-async def test_update_movie_success(client, db_session, seed_database):
+async def test_update_movie_success(client, db_session, seed_database) -> None:
     """
     Test the `/movies/{movie_id}/` endpoint for successfully updating a movie's details.
     """
@@ -518,7 +519,7 @@ async def test_update_movie_success(client, db_session, seed_database):
 
 
 @pytest.mark.asyncio
-async def test_update_movie_not_found(client):
+async def test_update_movie_not_found(client) -> None:
     """
     Test the `/movies/{movie_id}/` endpoint with a non-existent movie ID.
     """

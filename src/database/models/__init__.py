@@ -1,4 +1,4 @@
-from .base import Base
+from src.database.models.base import Base
 from .accounts import (
     UserModel,
     UserGroupModel,
@@ -20,7 +20,18 @@ from .movies import (
 
 __all__ = [
     "Base",
-    "UserModel", "UserGroupModel", "UserGroupEnum", "ActivationTokenModel", "PasswordResetTokenModel", "RefreshTokenModel",
-    "MovieModel", "LanguageModel", "ActorModel", "GenreModel", "CountryModel",
-    "MoviesGenresModel", "ActorsMoviesModel", "MoviesLanguagesModel"
+    "UserModel",
+    "UserGroupModel",
+    "UserGroupEnum",
+    "ActivationTokenModel",
+    "PasswordResetTokenModel",
+    "RefreshTokenModel",
+    "MovieModel",
+    "LanguageModel",
+    "ActorModel",
+    "GenreModel",
+    "CountryModel",
+    "MoviesGenresModel",
+    "ActorsMoviesModel",
+    "MoviesLanguagesModel",
 ]

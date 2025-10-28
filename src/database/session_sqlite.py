@@ -1,10 +1,17 @@
 from contextlib import asynccontextmanager
-from typing import AsyncGenerator, Optional, Callable
-
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, AsyncEngine
+from typing import (
+    AsyncGenerator,
+    Optional,
+    Callable,
+)
+from sqlalchemy.ext.asyncio import (
+    create_async_engine,
+    AsyncSession,
+    AsyncEngine,
+)
 from sqlalchemy.orm import sessionmaker
-
 from src.database.models.base import Base
+
 
 sqlite_engine: Optional[AsyncEngine] = None
 AsyncSQLiteSessionLocal: Optional[Callable[..., AsyncSession]] = None

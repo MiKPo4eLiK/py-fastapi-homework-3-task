@@ -1,23 +1,19 @@
 from .accounts import (
     UserLoginRequestSchema,
     TokenRefreshRequestSchema,
-    TokenResponseSchema,
     AccessTokenResponseSchema,
     UserRegistrationRequestSchema,
-    UserActivationRequestSchema,
-    PasswordResetRequestSchema,
-    PasswordResetCompleteSchema,
     MessageResponseSchema,
+    PasswordResetRequestSchema,
+    PasswordResetSchema,
 )
 
 __all__ = [
     "UserLoginRequestSchema",
     "TokenRefreshRequestSchema",
-    "TokenResponseSchema",
     "AccessTokenResponseSchema",
     "UserRegistrationRequestSchema",
-    "UserActivationRequestSchema",
     "PasswordResetRequestSchema",
-    "PasswordResetCompleteSchema",
     "MessageResponseSchema",
+    "PasswordResetSchema",
 ]

@@ -1,12 +1,24 @@
 import datetime
 from enum import Enum
 from typing import Optional
-
-from sqlalchemy import String, Float, Text, DECIMAL, UniqueConstraint, Date, ForeignKey, Table, Column
-from sqlalchemy.orm import mapped_column, Mapped, relationship
+from sqlalchemy import (
+    String,
+    Float,
+    Text,
+    DECIMAL,
+    UniqueConstraint,
+    Date,
+    ForeignKey,
+    Table,
+    Column,
+)
+from sqlalchemy.orm import (
+    mapped_column,
+    Mapped,
+    relationship,
+)
 from sqlalchemy import Enum as SQLAlchemyEnum
-
-from database import Base
+from src.database.models.base import Base
 
 
 class MovieStatusEnum(str, Enum):
@@ -57,7 +69,7 @@ class GenreModel(Base):
         back_populates="genres"
     )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Genre(name='{self.name}')>"
 
 
@@ -73,7 +85,7 @@ class ActorModel(Base):
         back_populates="actors"
     )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Actor(name='{self.name}')>"
 
 
@@ -86,7 +98,7 @@ class CountryModel(Base):
 
     movies: Mapped[list["MovieModel"]] = relationship("MovieModel", back_populates="country")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Country(code='{self.code}', name='{self.name}')>"
 
 
@@ -102,7 +114,7 @@ class LanguageModel(Base):
         back_populates="languages"
     )
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Language(name='{self.name}')>"
 
 
@@ -146,8 +158,8 @@ class MovieModel(Base):
     )
 
     @classmethod
-    def default_order_by(cls):
+    def default_order_by(cls) -> list:
         return [cls.id.desc()]
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"<Movie(name='{self.name}', release_date='{self.date}', score={self.score})>"
