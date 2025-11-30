@@ -209,7 +209,7 @@ async def example_route(db: AsyncSession = Depends(get_db)):
 - Additional dependency injection functions like `get_settings` and `get_jwt_auth_manager` can be imported from the `config` package for other common application needs:
 
 ```python
-from config import get_settings, get_jwt_auth_manager
+from src.config import get_settings, get_jwt_auth_manager
 ``` 
 
 You can use this pattern across your application for any routes that need database access or other common dependencies. This modular approach improves code maintainability and testability.
