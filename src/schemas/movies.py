@@ -1,16 +1,8 @@
-from datetime import (
-    date,
-    datetime,
-)
-from typing import (
-    Optional,
-    List,
-)
-from pydantic import (
-    BaseModel,
-    Field,
-    field_validator,
-)
+from datetime import date, datetime
+from typing import Optional, List
+
+from pydantic import BaseModel, Field, field_validator
+
 from src.database.models.movies import MovieStatusEnum
 from src.schemas.examples.movies import (
     country_schema_example,
@@ -21,7 +13,7 @@ from src.schemas.examples.movies import (
     movie_list_response_schema_example,
     movie_create_schema_example,
     movie_detail_schema_example,
-    movie_update_schema_example
+    movie_update_schema_example,
 )
 
 
@@ -31,11 +23,7 @@ class LanguageSchema(BaseModel):
 
     model_config = {
         "from_attributes": True,
-        "json_schema_extra": {
-            "examples": [
-                language_schema_example
-            ]
-        }
+        "json_schema_extra": {"examples": [language_schema_example]},
     }
 
 
@@ -46,11 +34,7 @@ class CountrySchema(BaseModel):
 
     model_config = {
         "from_attributes": True,
-        "json_schema_extra": {
-            "examples": [
-                country_schema_example
-            ]
-        }
+        "json_schema_extra": {"examples": [country_schema_example]},
     }
 
 
@@ -60,11 +44,7 @@ class GenreSchema(BaseModel):
 
     model_config = {
         "from_attributes": True,
-        "json_schema_extra": {
-            "examples": [
-                genre_schema_example
-            ]
-        }
+        "json_schema_extra": {"examples": [genre_schema_example]},
     }
 
 
@@ -74,11 +54,7 @@ class ActorSchema(BaseModel):
 
     model_config = {
         "from_attributes": True,
-        "json_schema_extra": {
-            "examples": [
-                actor_schema_example
-            ]
-        }
+        "json_schema_extra": {"examples": [actor_schema_example]},
     }
 
 
@@ -91,16 +67,16 @@ class MovieBaseSchema(BaseModel):
     budget: float = Field(..., ge=0)
     revenue: float = Field(..., ge=0)
 
-    model_config = {
-        "from_attributes": True
-    }
+    model_config = {"from_attributes": True}
 
     @field_validator("date")
     @classmethod
-    def validate_date(cls, value) -> date:
+    def validate_date(cls, value):
         current_year = datetime.now().year
         if value.year > current_year + 1:
-            raise ValueError(f"The year in 'date' cannot be greater than {current_year + 1}.")
+            raise ValueError(
+                f"The year in 'date' cannot be greater than {current_year + 1}."
+            )
         return value
 
 
@@ -113,11 +89,7 @@ class MovieDetailSchema(MovieBaseSchema):
 
     model_config = {
         "from_attributes": True,
-        "json_schema_extra": {
-            "examples": [
-                movie_detail_schema_example
-            ]
-        }
+        "json_schema_extra": {"examples": [movie_detail_schema_example]},
     }
 
 
@@ -130,11 +102,7 @@ class MovieListItemSchema(BaseModel):
 
     model_config = {
         "from_attributes": True,
-        "json_schema_extra": {
-            "examples": [
-                movie_item_schema_example
-            ]
-        }
+        "json_schema_extra": {"examples": [movie_item_schema_example]},
     }
 
 
@@ -147,11 +115,7 @@ class MovieListResponseSchema(BaseModel):
 
     model_config = {
         "from_attributes": True,
-        "json_schema_extra": {
-            "examples": [
-                movie_list_response_schema_example
-            ]
-        }
+        "json_schema_extra": {"examples": [movie_list_response_schema_example]}
     }
 
 
@@ -170,11 +134,7 @@ class MovieCreateSchema(BaseModel):
 
     model_config = {
         "from_attributes": True,
-        "json_schema_extra": {
-            "examples": [
-                movie_create_schema_example
-            ]
-        }
+        "json_schema_extra": {"examples": [movie_create_schema_example]}
     }
 
     @field_validator("country", mode="before")

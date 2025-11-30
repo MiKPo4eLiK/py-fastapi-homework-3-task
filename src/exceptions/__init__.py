@@ -1,4 +1,4 @@
-from src.exceptions.security import (
+from .security import (
     BaseSecurityError,
     InvalidTokenError,
     TokenExpiredError

@@ -1,21 +1,22 @@
 import os
-from typing import AsyncGenerator
 
 from fastapi import Depends
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.config.settings import TestingSettings, Settings, BaseAppSettings
 from src.security.interfaces import JWTAuthManagerInterface
 from src.security.token_manager import JWTAuthManager
 
-from src.database.session_sqlite import get_sqlite_db
-from src.database.session_postgresql import get_postgresql_db
-
 
 def get_settings() -> BaseAppSettings:
     """
     Retrieve the application settings based on the current environment.
-    ...
+
+    This function reads the 'ENVIRONMENT' environment variable (defaulting to 'developing' if not set)
+    and returns a corresponding settings instance. If the environment is 'testing', it returns an instance
+    of TestingSettings; otherwise, it returns an instance of Settings.
+
+    Returns:
+        BaseAppSettings: The settings instance appropriate for the current environment.
     """
     environment = os.getenv("ENVIRONMENT", "developing")
     if environment == "testing":
@@ -23,29 +24,26 @@ def get_settings() -> BaseAppSettings:
     return Settings()
 
 
-async def get_db(
-    settings: BaseAppSettings = Depends(get_settings)
-) -> AsyncGenerator[AsyncSession, None]:
-    """
-    Provide an asynchronous database session for FastAPI dependencies.
-    Delegates to the configured database session function (PostgreSQL for development, SQLite for testing).
-    """
-    if isinstance(settings, TestingSettings):
-        session_generator = get_sqlite_db
-    else:
-        session_generator = get_postgresql_db
-
-    async for session in session_generator():
-        yield session
-
-
-def get_jwt_auth_manager(settings: BaseAppSettings = Depends(get_settings)) -> JWTAuthManagerInterface:
+def get_jwt_auth_manager(
+        settings: BaseAppSettings = Depends(get_settings)
+) -> JWTAuthManagerInterface:
     """
     Create and return a JWT authentication manager instance.
-    ...
+
+    This function uses the provided application settings to instantiate a JWTAuthManager, which implements
+    the JWTAuthManagerInterface. The manager is configured with secret keys for access and refresh tokens
+    as well as the JWT signing algorithm specified in the settings.
+
+    Args:
+        settings (BaseAppSettings, optional): The application settings instance.
+        Defaults to the output of get_settings().
+
+    Returns:
+        JWTAuthManagerInterface: An instance of JWTAuthManager configured with
+        the appropriate secret keys and algorithm.
     """
     return JWTAuthManager(
         secret_key_access=settings.SECRET_KEY_ACCESS,
         secret_key_refresh=settings.SECRET_KEY_REFRESH,
-        algorithm=settings.JWT_SIGNING_ALGORITHM
+        algorithm=settings.JWT_SIGNING_ALGORITHM,
     )

@@ -3,25 +3,17 @@ from src.schemas.movies import (
     MovieListResponseSchema,
     MovieListItemSchema,
     MovieCreateSchema,
-    MovieUpdateSchema
+    MovieUpdateSchema,
 )
 from src.schemas.accounts import (
     UserRegistrationRequestSchema,
+    UserRegistrationResponseSchema,
+    UserActivationRequestSchema,
     MessageResponseSchema,
     PasswordResetRequestSchema,
+    PasswordResetCompleteRequestSchema,
+    UserLoginResponseSchema,
     UserLoginRequestSchema,
     TokenRefreshRequestSchema,
+    TokenRefreshResponseSchema,
 )
-
-__all__ = [
-    "MovieDetailSchema",
-    "MovieListResponseSchema",
-    "MovieListItemSchema",
-    "MovieCreateSchema",
-    "MovieUpdateSchema",
-    "UserRegistrationRequestSchema",
-    "MessageResponseSchema",
-    "PasswordResetRequestSchema",
-    "UserLoginRequestSchema",
-    "TokenRefreshRequestSchema",
-]

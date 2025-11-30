@@ -1,19 +1,36 @@
 import os
+
 from src.database.models.base import Base
+from src.database.models.accounts import (
+    UserModel,
+    UserGroupModel,
+    UserGroupEnum,
+    ActivationTokenModel,
+    PasswordResetTokenModel,
+    RefreshTokenModel,
+)
+from src.database.models.movies import (
+    MovieModel,
+    LanguageModel,
+    ActorModel,
+    GenreModel,
+    CountryModel,
+    MoviesGenresModel,
+    ActorsMoviesModel,
+    MoviesLanguagesModel,
+)
+from src.database.session_sqlite import reset_sqlite_database as reset_database
+from src.database.validators import accounts as accounts_validators
 
 environment = os.getenv("ENVIRONMENT", "developing")
 
 if environment == "testing":
-    from .session_sqlite import (
-        reset_sqlite_database as reset_database,
-        initialize_sqlite,
+    from src.database.session_sqlite import (
         get_sqlite_db_contextmanager as get_db_contextmanager,
         get_sqlite_db as get_db,
     )
 else:
-    from .session_postgresql import initialize_postgresql
-    initialize_postgresql()
-    from .session_postgresql import (
+    from src.database.session_postgresql import (
         get_postgresql_db_contextmanager as get_db_contextmanager,
         get_postgresql_db as get_db,
     )
