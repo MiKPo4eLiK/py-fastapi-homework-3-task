@@ -3,7 +3,7 @@ from typing import Optional
 import jwt
 from fastapi import HTTPException
 from src.security.interfaces import JWTAuthManagerInterface
-import os # Import os for environment variable access
+import os  # Import os for environment variable access
 
 
 class JWTManager(JWTAuthManagerInterface):
