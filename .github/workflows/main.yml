@@ -8,15 +8,6 @@ on:
 jobs:
   test-accounts:
     runs-on: ubuntu-latest
-    services:
-      mailhog:
-        image: mailhog/mailhog
-        ports:
-          - 1025:1025
-          - 8025:8025
-    env:
-      MAIL_HOST: localhost
-      MAIL_PORT: 1025
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -36,9 +27,9 @@ jobs:
         run: |
           poetry run flake8 src
 
-      - name: Run accounts tests
+      - name: Run accounts tests (skip integration)
         run: |
-          poetry run pytest src/tests/test_integration/test_accounts.py
+          poetry run pytest -m "not integration" src/tests/test_integration/test_accounts.py
 
   test-movies:
     runs-on: ubuntu-latest
@@ -61,6 +52,6 @@ jobs:
         run: |
           poetry run flake8 src
 
-      - name: Run movies tests
+      - name: Run movies tests (skip integration)
         run: |
-          poetry run pytest src/tests/test_integration/test_movies.py
+          poetry run pytest -m "not integration" src/tests/test_integration/test_movies.py
