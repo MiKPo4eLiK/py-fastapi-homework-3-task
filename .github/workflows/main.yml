@@ -8,6 +8,15 @@ on:
 jobs:
   test-accounts:
     runs-on: ubuntu-latest
+    services:
+      mailhog:
+        image: mailhog/mailhog
+        ports:
+          - 1025:1025
+          - 8025:8025
+    env:
+      MAIL_HOST: localhost
+      MAIL_PORT: 1025
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
