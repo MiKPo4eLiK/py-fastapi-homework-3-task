@@ -8,6 +8,7 @@ pwd_context = CryptContext(
     bcrypt__truncate_error=False,
 )
 
+
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
