@@ -99,6 +99,8 @@ async def activate_user(
             status_code=400, detail="Invalid or expired activation token."
         )
 
+    expires_at_aware = activation_token.expires_at.replace(tzinfo=timezone.utc)
+
     if expires_at_aware < datetime.now(timezone.utc):
         raise HTTPException(status_code=400, detail="Invalid or expired activation token.")
 
