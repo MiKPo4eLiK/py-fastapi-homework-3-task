@@ -3,17 +3,17 @@ from httpx import AsyncClient, ASGITransport
 from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from src.config import get_settings
-from src.database import (
+from config import get_settings
+from database import (
     reset_database,
     get_db_contextmanager,
     UserGroupEnum,
-    UserGroupModel,
+    UserGroupModel
 )
-from src.database.populate import CSVDatabaseSeeder
-from src.main import app
-from src.security.interfaces import JWTAuthManagerInterface
-from src.security.token_manager import JWTAuthManager
+from database.populate import CSVDatabaseSeeder
+from main import app
+from security.interfaces import JWTAuthManagerInterface
+from security.token_manager import JWTAuthManager
 
 
 @pytest_asyncio.fixture(scope="function", autouse=True)
@@ -30,9 +30,7 @@ async def reset_db():
 @pytest_asyncio.fixture(scope="function")
 async def client():
     """Provide an asynchronous test client for making HTTP requests."""
-    async with AsyncClient(
-            transport=ASGITransport(app=app), base_url="http://test"
-    ) as async_client:
+    async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as async_client:
         yield async_client
 
 
@@ -60,9 +58,7 @@ async def seed_database(db_session):
     :type db_session: AsyncSession
     """
     settings = get_settings()
-    seeder = CSVDatabaseSeeder(
-        csv_file_path=settings.PATH_TO_MOVIES_CSV, db_session=db_session
-    )
+    seeder = CSVDatabaseSeeder(csv_file_path=settings.PATH_TO_MOVIES_CSV, db_session=db_session)
 
     if not await seeder.is_db_populated():
         await seeder.seed()
@@ -87,7 +83,7 @@ async def jwt_manager() -> JWTAuthManagerInterface:
     return JWTAuthManager(
         secret_key_access=settings.SECRET_KEY_ACCESS,
         secret_key_refresh=settings.SECRET_KEY_REFRESH,
-        algorithm=settings.JWT_SIGNING_ALGORITHM,
+        algorithm=settings.JWT_SIGNING_ALGORITHM
     )
 
 

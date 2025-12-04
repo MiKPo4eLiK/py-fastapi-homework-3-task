@@ -2,7 +2,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Optional
 import jwt
 from fastapi import HTTPException
-from src.security.interfaces import JWTAuthManagerInterface
+from security.interfaces import JWTAuthManagerInterface
 import os  # Import os for environment variable access
 
 
